@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityServerTutorialAPI.Controllers
 {
     [Route("identity")]
-    //[Authorize]
+    [Authorize]
     public class IdentityController : ControllerBase
     {
         [HttpGet]

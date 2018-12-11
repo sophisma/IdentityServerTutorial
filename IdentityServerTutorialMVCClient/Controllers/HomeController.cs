@@ -44,7 +44,7 @@ namespace IdentityServerTutorialMVCClient.Controllers
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var content = client.GetStringAsync("https://localhost:5001/identity").Result;
+            var content = client.GetStringAsync("https://localhost:5001/products").Result;
 
             ViewBag.Json = JArray.Parse(content).ToString();
             return View("APICall");
@@ -69,23 +69,11 @@ namespace IdentityServerTutorialMVCClient.Controllers
                 throw new Exception(tokenResponse.Error);
             }
 
-            //Console.WriteLine(tokenResponse.Json);
-
-            //// request token for resourceownerpassword client
-            //var tokenClient = new TokenClient(disco.TokenEndpoint, "mvc", "secret");
-            //var tokenResponse = tokenClient.RequestResourceOwnerPasswordAsync("alice", "password", "api1").Result;
-
-            //if (tokenResponse.IsError)
-            //{
-            //    Console.WriteLine(tokenResponse.Error);
-            //    throw new Exception(tokenResponse.Error);
-            //}
-
             // call api
             var client = new HttpClient();
             client.SetBearerToken(tokenResponse.AccessToken);
 
-            var response = client.GetAsync("https://localhost:5001/identity").Result;
+            var response = client.GetAsync("https://localhost:5001/products").Result;
 
             if (!response.IsSuccessStatusCode)
             {
