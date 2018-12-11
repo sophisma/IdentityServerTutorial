@@ -1,0 +1,37 @@
+﻿@model  ProductsViewModel
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="col-md-8" style="margin: auto;">
+    <h1>Products</h1>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="row">
+                    Id
+                </th>
+                <th scope="row">
+                    Name
+                </th>
+                <th scope="row">
+                    Price
+                </th>
+            </tr>
+        </thead>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>
+                    @product.Id
+                </td>
+                <td>
+                    @product.Name
+                </td>
+                <td>
+                    @product.Price $
+                </td>
+            </tr>
+        }
+    </table>
+</div>

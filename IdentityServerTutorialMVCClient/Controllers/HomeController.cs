@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using IdentityModel.Client;
+using Newtonsoft.Json;
 
 namespace IdentityServerTutorialMVCClient.Controllers
 {
@@ -38,7 +39,7 @@ namespace IdentityServerTutorialMVCClient.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult APICallWithHttpContext()
+        public IActionResult ProductsCallWithHttpContext()
         {
             var accessToken = HttpContext.GetTokenAsync("access_token").Result;
 
@@ -46,11 +47,17 @@ namespace IdentityServerTutorialMVCClient.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var content = client.GetStringAsync("https://localhost:5001/products").Result;
 
-            ViewBag.Json = JArray.Parse(content).ToString();
-            return View("APICall");
+            var products = JsonConvert.DeserializeObject<List<Product>>(content);
+
+            var viewModel = new ProductsViewModel()
+            {
+                Products = products
+            };
+
+            return View("Products", viewModel);
         }
 
-        public IActionResult APICallWithTokenClient()
+        public IActionResult ProductsCallWithTokenClient()
         {
             // discover endpoints from metadata
             var disco = DiscoveryClient.GetAsync("https://localhost:5000").Result;
@@ -82,10 +89,16 @@ namespace IdentityServerTutorialMVCClient.Controllers
             else
             {
                 var content = response.Content.ReadAsStringAsync().Result;
-                ViewBag.Json = JArray.Parse(content);
-            }
 
-            return View("APICall");
+                var products = JsonConvert.DeserializeObject<List<Product>>(content);
+
+                var viewModel = new ProductsViewModel()
+                {
+                    Products = products
+                };
+
+                return View("Products", viewModel);
+            }
         }
     }
 }

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServerTutorialAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServerTutorialAPI.Controllers
 {
     [Route("products")]
+    [Authorize]
     public class ProductsController : Controller
     {
         [HttpGet]
